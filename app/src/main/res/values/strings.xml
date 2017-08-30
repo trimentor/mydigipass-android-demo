@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MydigipassDemo</string>
+    <string name="button.authenticate">Authenticate</string>
+</resources>
