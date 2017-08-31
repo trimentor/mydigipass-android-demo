@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.example.myapp.mydigipassdemo.R;
 import com.example.myapp.mydigipassdemo.databinding.UserFragmentBinding;
-import com.example.myapp.mydigipassdemo.model.User;
 import com.example.myapp.mydigipassdemo.viewmodel.UserViewModel;
 
 public class UserFragment extends Fragment {
@@ -23,7 +22,6 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         userFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.user_fragment, container, false);
-        userFragmentBinding.setView(this);
         userFragmentBinding.setViewmodel(userViewModel);
 
         View root = userFragmentBinding.getRoot();
@@ -36,13 +34,5 @@ public class UserFragment extends Fragment {
 
     public void setViewActivity(UserActivity userActivity) {
         this.userActivity = userActivity;
-    }
-
-    public void signin() {
-        userActivity.signIn();
-    }
-
-    public void updateUser(User user) {
-        userViewModel.updateUser(user);
     }
 }

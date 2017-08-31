@@ -9,6 +9,7 @@ import com.example.myapp.mydigipassdemo.R;
 import com.example.myapp.mydigipassdemo.model.User;
 import com.example.myapp.mydigipassdemo.task.TokenTask;
 import com.example.myapp.mydigipassdemo.task.UserDataTask;
+import com.example.myapp.mydigipassdemo.task.UserNavigator;
 import com.example.myapp.mydigipassdemo.util.ActivityUtil;
 import com.example.myapp.mydigipassdemo.viewmodel.UserViewModel;
 import com.vasco.mydigipass.sdk.MDPMobile;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 import static com.example.myapp.mydigipassdemo.BuildConfig.MDP_CLIENT_ID;
 
-public class UserActivity extends LifecycleActivity implements OnMDPAuthenticationListener, TokenTask.TokenListener, UserDataTask.UserDataListener {
+public class UserActivity extends LifecycleActivity implements UserNavigator, OnMDPAuthenticationListener, TokenTask.TokenListener, UserDataTask.UserDataListener {
     private MDPMobile mydigipass;
     private UserViewModel viewModel;
     private UserFragment viewFragment;
@@ -36,6 +37,7 @@ public class UserActivity extends LifecycleActivity implements OnMDPAuthenticati
         viewModel = findOrCreateViewModel();
         viewFragment = findOrCreateViewFragment();
 
+        viewModel.setUserNavigator(this);;
         viewFragment.setViewActivity(this);
         viewFragment.setViewModel(viewModel);
     }
@@ -44,6 +46,13 @@ public class UserActivity extends LifecycleActivity implements OnMDPAuthenticati
     protected void onDestroy() {
         viewModel.onActivityDestroyed();
         super.onDestroy();
+    }
+
+    @Override
+    public void authenticate() {
+        Map<String, String> passthroughParameters = new HashMap<>();
+        passthroughParameters.put("new_user", "yes");
+        mydigipass.authenticate("xyzabc1234567", "profile", passthroughParameters);
     }
 
     @Override
@@ -74,20 +83,13 @@ public class UserActivity extends LifecycleActivity implements OnMDPAuthenticati
 
     @Override
     public void onUserDataSuccess(@Nullable User user) {
-        viewFragment.updateUser(user);
+        viewModel.setFirstName(user.getFirstName());
+        viewModel.setLastName(user.getLastName());
     }
 
     @Override
     public void onUserDataError() {
 
-    }
-
-    public void signIn() {
-        Map<String, String> passthroughParameters = new HashMap<>();
-        passthroughParameters.put("redirect_to", "dashboard");
-        passthroughParameters.put("new_user", "yes");
-
-        mydigipass.authenticate("xyzabc1234567", "profile", passthroughParameters);
     }
 
     private void setupMydigipass() {

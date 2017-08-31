@@ -3,13 +3,16 @@ package com.example.myapp.mydigipassdemo.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.annotation.Nullable;
 
 import com.example.myapp.mydigipassdemo.BR;
 import com.example.myapp.mydigipassdemo.model.User;
+import com.example.myapp.mydigipassdemo.task.UserNavigator;
 
 public class UserViewModel extends BaseObservable {
     private Context vmContext;
     private User vmUser;
+    private UserNavigator vmUserNavigator;
 
     public UserViewModel(Context context) {
         this.vmContext = context.getApplicationContext();
@@ -20,11 +23,26 @@ public class UserViewModel extends BaseObservable {
 
     }
 
-    public void updateUser(User user) {
-        vmUser.setFirstName(user.getFirstName());
-        notifyPropertyChanged(BR.firstName);
-        vmUser.setLastName(user.getLastName());
-        notifyPropertyChanged(BR.lastName);
+    public void setUserNavigator(UserNavigator userNavigator) {
+        vmUserNavigator = userNavigator;
+    }
+
+    public void authenticate() {
+        vmUserNavigator.authenticate();
+    }
+
+    public void setFirstName(@Nullable String firstName) {
+        if (firstName != null) {
+            vmUser.setFirstName(firstName);
+            notifyPropertyChanged(BR.firstName);
+        }
+    }
+
+    public void setLastName(@Nullable String lastName) {
+        if (lastName != null) {
+            vmUser.setLastName(lastName);
+            notifyPropertyChanged(BR.lastName);
+        }
     }
 
     @Bindable
