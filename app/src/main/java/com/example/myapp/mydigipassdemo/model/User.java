@@ -1,8 +1,6 @@
 package com.example.myapp.mydigipassdemo.model;
 
-import android.databinding.BaseObservable;
-
-public class User extends BaseObservable {
+public class User {
     private String firstName;
     private String lastName;
 
