@@ -20,6 +20,13 @@ android {
     dataBinding {
         enabled = true
     }
+    productFlavors {
+        development {
+            buildConfigField("String", "MDP_CLIENT_ID", '""')
+            buildConfigField("String", "MDP_CLIENT_SECRET", '""')
+            buildConfigField("String", "MDP_BASE_URL", '"https://www.mydigipass.com/oauth/"')
+        }
+    }
 }
 
 repositories {
@@ -46,4 +53,9 @@ dependencies {
 
     compile "android.arch.persistence.room:runtime:1.0.0-alpha9"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha9"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // MYDIGIPASS API
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }
